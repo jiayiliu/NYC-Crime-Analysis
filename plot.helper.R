@@ -33,7 +33,7 @@ color.bar <- function(lut, min, max=-min, nticks=11, title='') {
   axis(2, ticks, las=1)
   for (i in 1:(length(lut)-1)) {
     y = (i-1)/scale + min
-    rect(0,y,10,y+1/scale, col=lut[i], border=NA)
+    rect(0,y,10,y+1/scale, col=lut[length(lut)-i], border=NA)
   }
 }
 #' Decorate the time series crime rate plot
@@ -165,7 +165,7 @@ plot_crime_pie <- function(data, weight=NULL){
 #' @param precinct precinct JSON data
 #' @param scale data.frame with precinct id and scale to use
 addPrecinct_color <- function(map, precinct, scale){
-    scale[,2]<-rescale(scale[,2])
+    scale[,2]<-1-rescale(scale[,2])
     for (i in names(precinct)){
         this.color <- scale[as.integer(i)==scale[,1],2]
         this.color <- rgb(colorpalette(this.color),maxColorValue=256)

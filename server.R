@@ -131,9 +131,11 @@ shinyServer(function(input, output, session) {
     weight <- get_weight()
     if(input$averaged){
       data <- get_crime_data_averaged()
+      if(is.null(data)) return()
       plot_monthly_trend(data, weight, input$overlay)
     } else {
       data <- get_crime_data_full()
+      if(is.null(data)) return()
       plot_full_trend(data, weight, input$overlay)
     }
   })

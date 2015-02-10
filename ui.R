@@ -6,7 +6,7 @@ library(shiny)
 library(leaflet)
 
 sdate <- c("all",1:12)
-names(sdate) <- sdate
+names(sdate) <- c("All","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
 shinyUI(
   navbarPage("Crime Analysis", id="nav",
              tabPanel("Interactive Crime Map",
@@ -27,7 +27,7 @@ shinyUI(
                                         fixed=TRUE, draggable=FALSE,
                                         top=50, left="auto",right=20,bottom="auto",
                                         width=330,height="auto",
-                                        h2("Crime Indicator"),
+                                        h3("Crime Indicator"),
                                         selectInput("ncrime","Choose:",
                                                      c("Total Amount"="tot",
                                                        "Change Rate"="change"),
@@ -38,7 +38,7 @@ shinyUI(
                                                        "Per 1 Mi^2"="area"),
                                                      selected="raw"),
                                         selectInput("month","Month:", sdate),
-                                        h2("Crime Weight"),
+                                        h3("Crime Weight"),
                                         sliderInput("rape2", "Rape", 
                                                     min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
                                         sliderInput("robbery2", "Robbery", 
@@ -82,7 +82,7 @@ shinyUI(
                           ),
                           sidebarLayout(
                             sidebarPanel(
-                              numericInput("precinct","Precinct No. (-1 for all)",
+                              numericInput("precinct","Precinct No. (select from Map, or -1 for all)",
                                            -1, min=-1, max=200, step=1),
                               checkboxInput("averaged","Monthly Average?",value=TRUE),
                               checkboxInput("overlay","Overlay Individual Crime",value=FALSE),
