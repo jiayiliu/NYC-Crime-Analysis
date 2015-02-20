@@ -14,7 +14,7 @@ Thanks to the NYC open data, now I can check the crime record interactive.  But 
 
 After scrutinizing the javascript of the NYC crime map, I found that the basic information for precincts are stored in `crime/js/data.js` and the crime records for each precinct are retrieved by a google API request.  The easiest way to discover that request is by monitoring the network traffic, for example, using the network monitor in the [Chrome developer tools](https://developer.chrome.com/devtools#improving-network-performance).
 
-The data mining are splitted into two steps.  In the following, I will explain these two steps in details.  In addition, the source code is avaialbe on [github]().
+The data mining are splitted into two steps.  In the following, I will explain these two steps in details.  In addition, the source code is avaialbe on [github](https://github.com/jiayiliu/NYC-Crime-Analysis).
 
 ## Extract basic precinct information
 We need three basic information for each precinct: `ID`, `population`, and `area`.  This information is stored in [data.js](http://maps.nyc.gov/crime/js/data.js).  Because it is in javascript format, we need a little manual tweak here to convert it into [JSON](https://developer.chrome.com/devtools#improving-network-performance) file.  From line 288 we copy the text after `pct:{`.  Notice keep the bracktes in pairs.  And save the text into a `precinct.json` file for the next step.  This text is now a JSON array with the ID as the key for each entry and in the entry, "g" for the area geometry and "p" for the population.
@@ -65,8 +65,47 @@ get_crime_data <- function(year, month, precinct){
 }
 ```
 
+The above function `get_crime_data` will fetch one month crime data for a specific precinct.  After saving all available precincts in `data.js` from 2013-2014, we finish the web scraping part.
 
 # Analysis and Visualization
+
+## Difficulties to overcome
+
++ First, the heterogeneous nature of the crimes creates the first challenge to understand the crime distribution in NYC.  The following code will create the pie chart for the composition of crimes: 
+
+1) We load the processed data `load("data/record.RData")`.
+2) We get one month data or monthly averaged data from `mdata <- get_monthly_data(data, -1, mean=TRUE)`.
+3) We create a melted data with `value` (crime number) and `variable` (crime type): `vdata <- vdata <- melt(mdata[mdata$MONTH==1,],id="MONTH")`.
+4) Now we are ready to plot the pie chart `plot_crime_pie(vdata)
+
+
+
+```
+plot_crime_pie <- function(data, weight=NULL){
+    fig <- ggplot(data, aes(x="", y=value, fill=variable)) + 
+        geom_bar(width=1,stat="identity") + 
+        coord_polar(theta="y") +
+        scale_fill_brewer(palette="Set1", name="Crime Type",
+                          breaks=c(crime.type),
+                          labels=labels[-1]) + 
+        xlab("") + ylab("") + ggtitle("Crime Dist.")
+    
+    if (is.null(weight))
+        return(fig)
+    
+    data$wvalue <- data$value*weight
+    fig2 <- ggplot(data, aes(x="", y=wvalue, fill=variable)) + 
+        geom_bar(width=1,stat="identity") + 
+        coord_polar(theta="y") +
+        scale_fill_brewer(palette="Set1", name="Crime Type",
+                          breaks=c(crime.type),
+                          labels=labels[-1]) + 
+        xlab("") + ylab("") + ggtitle("Weighted Crime Dist.")
+    
+    return(multiplot(fig,fig2,cols=1))
+}
+```
+
 
 # Shiny R app
 

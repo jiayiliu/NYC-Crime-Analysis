@@ -10,7 +10,6 @@ div.outer {
 
 h1, h2, h3, h4 { font-weight: 400; }
 
-
 #controls {
   /* Appearance */
   background-color: white;
@@ -51,4 +50,9 @@ h1, h2, h3, h4 { font-weight: 400; }
   /* Fade in while hovering */
   opacity: 0.95;
   transition-delay: 0;
+}
+
+div.control-slider-bar label {
+position:absolute; 
+margin-left:15px;
 }

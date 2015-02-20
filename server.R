@@ -113,7 +113,7 @@ shinyServer(function(input, output, session) {
   })
   session$onSessionEnded(clickObs$suspend)
     
-  # create pie chart
+  # create <- get_monthly_data(data, -1, mean=TRUE)e chart
   output$piechart <- renderPlot({
     if (!is_legend()) return()
     weight <- get_weight()

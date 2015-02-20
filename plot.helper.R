@@ -135,6 +135,10 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 #' Plot pie chart of crime data
 #' @param data the subset of crime data (need to be melted)
+#' @example source("analyze.R")
+#' mdata <- get_monthly_data(data,-1,mean)
+#' vdata <- vdata <- melt(mdata[mdata$MONTH==1,],id="MONTH")
+#' plot_crime_pie(vdata)
 plot_crime_pie <- function(data, weight=NULL){
     fig <- ggplot(data, aes(x="", y=value, fill=variable)) + 
         geom_bar(width=1,stat="identity") + 
@@ -157,7 +161,6 @@ plot_crime_pie <- function(data, weight=NULL){
         xlab("") + ylab("") + ggtitle("Weighted Crime Dist.")
     
     return(multiplot(fig,fig2,cols=1))
-    
 }
 
 #' Create a color scaled map for all precincts

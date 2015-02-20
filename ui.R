@@ -6,7 +6,7 @@ library(shiny)
 library(leaflet)
 
 sdate <- c("all",1:12)
-names(sdate) <- c("All","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+names(sdate) <- sdate
 shinyUI(
   navbarPage("Crime Analysis", id="nav",
              tabPanel("Interactive Crime Map",
@@ -27,7 +27,7 @@ shinyUI(
                                         fixed=TRUE, draggable=FALSE,
                                         top=50, left="auto",right=20,bottom="auto",
                                         width=330,height="auto",
-                                        h3("Crime Indicator"),
+                                        h4("Crime Indicator"),
                                         selectInput("ncrime","Choose:",
                                                      c("Total Amount"="tot",
                                                        "Change Rate"="change"),
@@ -38,21 +38,23 @@ shinyUI(
                                                        "Per 1 Mi^2"="area"),
                                                      selected="raw"),
                                         selectInput("month","Month:", sdate),
-                                        h3("Crime Weight"),
-                                        sliderInput("rape2", "Rape", 
-                                                    min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                                        sliderInput("robbery2", "Robbery", 
-                                                    min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                                        sliderInput("burglary2", "Burglary", 
-                                                    min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                                        sliderInput("murder2", "Murder", 
-                                                    min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                                        sliderInput("felony2", "Felony Assault", 
-                                                    min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                                        sliderInput("GL2", "Grand Larceny", min = 0, 
-                                                    max = 1, value=1, step=0.25, ticks=FALSE),
-                                        sliderInput("GLMV2", "Grand Larceny\nof Motor Vehicle", 
-                                                    min = 0, max = 1, value=1, step=0.25, ticks=FALSE)
+                                        h4("Crime Weight"),
+                                        div(class="control-slider-bar",
+                                            sliderInput("rape2", "Rape", 
+                                                        min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                            sliderInput("robbery2", "Robbery", 
+                                                        min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                            sliderInput("burglary2", "Burglary", 
+                                                        min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                            sliderInput("murder2", "Murder", 
+                                                        min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                            sliderInput("felony2", "Felony Assault", 
+                                                        min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                            sliderInput("GL2", "Grand Larceny", min = 0, 
+                                                        max = 1, value=1, step=0.25, ticks=FALSE),
+                                            sliderInput("GLMV2", "Grand Larceny of Motor Vehicle", 
+                                                        min = 0, max = 1, value=1, step=0.25, ticks=FALSE)
+                                        )
                           ),
                           absolutePanel(id="colorbar", class="panel panel-default",
                                         fixed=TRUE, draggable=TRUE,
@@ -82,25 +84,27 @@ shinyUI(
                           ),
                           sidebarLayout(
                             sidebarPanel(
-                              numericInput("precinct","Precinct No. (select from Map, or -1 for all)",
+                              numericInput("precinct","Precinct No. (-1 for all)",
                                            -1, min=-1, max=200, step=1),
                               checkboxInput("averaged","Monthly Average?",value=TRUE),
                               checkboxInput("overlay","Overlay Individual Crime",value=FALSE),
                               helpText("Choose the weights for crimes:"),
-                              sliderInput("rape", "Rape", 
-                                          min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                              sliderInput("robbery", "Robbery", 
-                                          min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                              sliderInput("burglary", "Burglary", 
-                                          min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                              sliderInput("murder", "Murder", 
-                                          min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                              sliderInput("felony", "Felony Assault", 
-                                          min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
-                              sliderInput("GL", "Grand Larceny", min = 0, 
-                                          max = 1, value=1, step=0.25, ticks=FALSE),
-                              sliderInput("GLMV", "Grand Larceny\nof Motor Vehicle", 
-                                          min = 0, max = 1, value=1, step=0.25, ticks=FALSE)
+                              div(class="control-slider-bar",
+                                sliderInput("rape", "Rape", 
+                                            min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                sliderInput("robbery", "Robbery", 
+                                            min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                sliderInput("burglary", "Burglary", 
+                                            min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                sliderInput("murder", "Murder", 
+                                            min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                sliderInput("felony", "Felony Assault", 
+                                            min = 0, max = 1, value=1, step=0.25, ticks=FALSE),
+                                sliderInput("GL", "Grand Larceny", min = 0, 
+                                            max = 1, value=1, step=0.25, ticks=FALSE),
+                                sliderInput("GLMV", "Grand Larceny of Motor Veh.", 
+                                            min = 0, max = 1, value=1, step=0.25, ticks=FALSE)
+                              )
                             ),
                             mainPanel(plotOutput("tsPlot"))
                           )
