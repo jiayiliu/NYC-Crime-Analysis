@@ -1,5 +1,5 @@
 library(shiny)
-library(leaflet)
+library(leaflet) # devtools::install_github("rstudio/leaflet")
 source("analyze.R")
 source("plot.helper.R")
 load("data/precinct.RData")

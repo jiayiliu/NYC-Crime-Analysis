@@ -25,7 +25,7 @@ shinyUI(
                           ),
                           absolutePanel(id="controls", class="panel panel-default",
                                         fixed=TRUE, draggable=FALSE,
-                                        top=50, left="auto",right=20,bottom="auto",
+                                        top=100, left="auto",right=20,bottom="auto",
                                         width=330,height="auto",
                                         h4("Crime Indicator"),
                                         selectInput("ncrime","Choose:",
